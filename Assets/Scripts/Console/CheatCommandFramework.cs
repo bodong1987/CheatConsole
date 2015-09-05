@@ -165,7 +165,7 @@ namespace Assets.Scripts.Console
                             if (!TypeCastCheck(InArguments[i], argumentsTypes[i], out ErrorMessage))
                             {
                                 OutMessage = string.Format(
-                                "无法执行命令，因为参数[{2}]=\"{0}\"无法转换到{1}, 错误信息:{3}",
+                                "Failed excecute command，parameter [{2}]=\"{0}\" can not convert to {1}, Error Message:{3}",
                                     InArguments[i],
                                     argumentsTypes[i].argumentType.Name,
                                     GetArgumentNameAt(i),
