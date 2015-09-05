@@ -515,7 +515,7 @@ namespace Assets.Scripts.Console
 
             try
             {
-                if ((States.TopState() as CommandDisplayBasicState).DrawButton("上一步"))
+                if ((States.TopState() as CommandDisplayBasicState).DrawButton("Previous"))
                 {
                     States.PopState();
                 }

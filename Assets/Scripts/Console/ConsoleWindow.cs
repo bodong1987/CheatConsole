@@ -55,7 +55,7 @@ namespace Assets.Scripts.Console
 
         public IConsoleLogger externalLogger = null;
 
-#if UNITY_4_6
+#if UNITY_4_6 || UNITY_5
         // this can disable penetrate this window
         protected UnityEngine.EventSystems.EventSystem CachedEventSystem;
 #endif
@@ -243,7 +243,7 @@ namespace Assets.Scripts.Console
                     Viewer.OnToggleVisible(bShouldVisible);
                 }
 
-#if UNITY_4_6
+#if UNITY_4_6 || UNITY_5
                 if (CachedEventSystem == null)
                 {
                     CachedEventSystem = UnityEngine.EventSystems.EventSystem.current;

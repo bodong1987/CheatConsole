@@ -166,7 +166,7 @@ namespace Assets.Scripts.Console
             else
             {
                 baseName = InName;
-                groupName = @"通用";
+                groupName = @"Gernal";
                 groupHierarchies = new string[] { groupName };
             }
         }

@@ -116,9 +116,9 @@ namespace Assets.Scripts.Common
             return Context.BinarySearch(item, new ComparerConverter(comparer));
         }
 
-        private class ComparerConverter : IComparer<object>
+        private struct ComparerConverter : IComparer<object>
         {
-            IComparer<T> ComparerRef = null;
+            IComparer<T> ComparerRef;
 
             public ComparerConverter(IComparer<T> comparer)
             {
@@ -167,9 +167,9 @@ namespace Assets.Scripts.Common
             Context.Sort(new ComparisonConverter(comparison));
         }
 
-        private class ComparisonConverter : IComparer<object>
+        private struct ComparisonConverter : IComparer<object>
         {
-            Comparison<T> ComparerRef = null;
+            Comparison<T> ComparerRef;
 
             public ComparisonConverter(Comparison<T> comparer)
             {

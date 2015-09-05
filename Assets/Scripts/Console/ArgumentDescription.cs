@@ -167,13 +167,13 @@ namespace Assets.Scripts.Console
 
                 if( string.IsNullOrEmpty(Result) )
                 {
-                OutErrorMessage = string.Format("不能将\"{0}\"转换到{1}的任何值.", InArgument, InType.Name);
+                OutErrorMessage = string.Format("Failed Convert\"{0}\" to {1}.", InArgument, InType.Name);
                 }
                 
                 return false;
             }
 
-        OutErrorMessage = string.Format("不能将\"{0}\"转换为任何有效属性.", InArgument);
+        OutErrorMessage = string.Format("Value \"{0}\" is not an valid property.", InArgument);
 
             return false;
         }

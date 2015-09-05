@@ -380,7 +380,7 @@ namespace Assets.Scripts.Console
                 }
             }
 
-            DrawLabel(string.Format(" 描述: {0}", InCommand.comment));
+            DrawLabel(string.Format(" Desc: {0}", InCommand.comment));
 
             GUILayout.EndHorizontal();
         }

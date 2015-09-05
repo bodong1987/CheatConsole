@@ -76,7 +76,7 @@ namespace Assets.Scripts.Console
 
             if (InArguments == null)
             {
-                OutMessage = "缺少所有必要参数";
+                OutMessage = "Missing parameters";
                 return false;
             }
 
@@ -108,7 +108,7 @@ namespace Assets.Scripts.Console
                 if (CurDependency.ShouldBackOff(CurDependValue))
                 {
                     OutMessage = string.Format(
-                    "您必须提供参数<{2}>, 因为参数<{0}>=\"{1}\"",
+                    "you must provide parameter <{2}>, because <{0}>=\"{1}\"",
                         argumentsTypes[CurDependency.dependsIndex].name,
                         CurDependValue,
                         InArugmentDescription.name
@@ -135,7 +135,7 @@ namespace Assets.Scripts.Console
                         if (!ArgumentDescription.isOptional)
                         {
                             // notify missing parameters                            
-                            OutMessage = string.Format("无法执行命令，因为缺少参数<{0}>, 类型为:<{1}>", ArgumentDescription.name, ArgumentDescription.argumentType.Name);
+                            OutMessage = string.Format("Failed excecute command，missing parameter <{0}>, type:<{1}>", ArgumentDescription.name, ArgumentDescription.argumentType.Name);
                             return false;
                         }
                         else
@@ -193,7 +193,7 @@ namespace Assets.Scripts.Console
                                     if (!TypeCastCheck(InArguments[i], argumentsTypes[i], out ErrorMessage))
                                     {
                                         OutMessage = string.Format(
-                                        "无法执行命令，因为参数[{2}]=\"{0}\"无法转换到{1}, 错误信息:{3}",
+                                        "Failed excecute command, parameter [{2}]=\"{0}\" can't convert to {1}, Error Message:{3}",
                                             InArguments[i],
                                             argumentsTypes[i].argumentType.Name,
                                             GetArgumentNameAt(i),
@@ -281,7 +281,7 @@ namespace Assets.Scripts.Console
 
         public abstract int messageID { get; }
 
-        public virtual string fullyHelper { get { return String.Format("{0} 描述: {1}", description, comment); } }
+        public virtual string fullyHelper { get { return String.Format("{0} Desc: {1}", description, comment); } }
 
         public virtual string[] arguments { get { return Arguments; } }
 
