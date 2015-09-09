@@ -780,4 +780,65 @@ namespace Assets.Scripts.Common
             }
         }
     }
+
+    public struct ReadonlyContext<T>
+    {
+        private List<T> Reference;
+
+        public ReadonlyContext(List<T> InReference)
+        {
+            Reference = InReference;
+        }
+
+        public Enumerator GetEnumerator()
+        {
+            return new Enumerator(Reference);
+        }
+
+        public int Count
+        {
+            get
+            {
+                return Reference.Count;
+            }
+        }
+
+        public struct Enumerator : IEnumerator<T>
+        {
+            private List<T> Reference;
+            private List<T>.Enumerator IterReference;
+
+            public Enumerator(List<T> InRefernce)
+            {
+                Reference = InRefernce;
+                IterReference = InRefernce.GetEnumerator();
+            }
+
+            public T Current
+            {
+                get
+                {
+                    return IterReference.Current;
+                }
+            }
+
+            object IEnumerator.Current { get { throw new NotImplementedException(); } }
+
+            public void Reset()
+            {
+                IterReference = Reference.GetEnumerator();
+            }
+
+            public void Dispose()
+            {
+                IterReference.Dispose();
+                Reference = null;
+            }
+
+            public bool MoveNext()
+            {
+                return IterReference.MoveNext();
+            }
+        }
+    }
 }
