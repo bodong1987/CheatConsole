@@ -100,17 +100,16 @@ namespace Assets.Scripts.Console
                 }
             }
 
-            if (Input.touches != null)
+            for (int i = 0; i < Input.touchCount; ++i)
             {
-                for (int i = 0; i < Input.touches.Length; ++i)
+                var CurTouch = Input.GetTouch(i);
+
+                if (CurTouch.fingerId == 4 && CurTouch.phase == TouchPhase.Began)
                 {
-                    if (Input.touches[i].fingerId == 4 && Input.touches[i].phase == TouchPhase.Began)
-                    {
-                        ToggleVisible();
-                        break;
-                    }
+                    ToggleVisible();
+                    break;
                 }
-            }
+            }   
         }
 
 

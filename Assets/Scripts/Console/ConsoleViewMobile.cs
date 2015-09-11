@@ -78,6 +78,14 @@ namespace Assets.Scripts.Console
 
             GUILayout.Label(Content, ParentView.CustomLabelStyle, GUILayout.Width(Size.x + 15));
         }
+
+        public virtual bool canScroll
+        {
+            get
+            {
+                return true;
+            }
+        }
     }
 
     [CommandDisplayAttribute]
@@ -103,11 +111,13 @@ namespace Assets.Scripts.Console
 
                 int Index = 0;
 
+                int Count = 0;
+
                 while (Iter.MoveNext())
                 {
                     string GroupName = Iter.Current.Key;
 
-                    if (DrawButton(GroupName))
+                    if (Count++ >= ParentView.skipCount && DrawButton(GroupName))
                     {
                         ParentView.SelectGroup(Iter.Current.Value);
                         break;
@@ -123,12 +133,21 @@ namespace Assets.Scripts.Console
                 GUI.contentColor = Color.white;
             }
         }
+
+        public override bool canScroll
+        {
+            get
+            {
+                return false;
+            }
+        }
     }
 
     [CommandDisplayAttribute]
     class CommandInGroupDisplayState : CommandDisplayBasicState
     {
         public CheatCommandGroup currentGroup { get; protected set; }
+        int Count = 0;
 
         public CommandInGroupDisplayState(ConsoleWindow InParentWindow, ConsoleViewMobile InParentView) :
             base(InParentWindow, InParentView)
@@ -148,7 +167,7 @@ namespace Assets.Scripts.Console
             {
                 string GroupName = Iter.Current.Key;
 
-                if (DrawButton(GroupName))
+                if (Count++ >= ParentView.skipCount && DrawButton(GroupName))
                 {
                     ParentView.SelectGroup(Iter.Current.Value);
                 }
@@ -176,27 +195,30 @@ namespace Assets.Scripts.Console
                 {
                     string FunctionName = Iter.Current.Value.comment;
 
-                    if (DrawButton(FunctionName, Iter.Current.Value.fullyHelper))
+                    if (Count++ >= ParentView.skipCount)
                     {
-                        ICheatCommand Command = Iter.Current.Value;
+                        if (DrawButton(FunctionName, Iter.Current.Value.fullyHelper))
+                        {
+                            ICheatCommand Command = Iter.Current.Value;
 
-                        if (Command.argumentsTypes == null ||
-                            Command.argumentsTypes.Length == 0)
-                        {
-                            // execute this command directly.
-                            logger.AddMessage(Command.StartProcess(new string[] { "" }));
+                            if (Command.argumentsTypes == null ||
+                                Command.argumentsTypes.Length == 0)
+                            {
+                                // execute this command directly.
+                                logger.AddMessage(Command.StartProcess(new string[] { "" }));
+                            }
+                            else
+                            {
+                                logger.Clear();
+                                ParentView.SelectionCommand(Iter.Current.Value);
+                                break;
+                            }
                         }
-                        else
-                        {
-                            logger.Clear();
-                            ParentView.SelectionCommand(Iter.Current.Value);
-                            break;
-                        }
+
+                        GUILayout.Label(GUI.tooltip, ParentView.CustomLabelStyle);
+
+                        GUI.tooltip = "";
                     }
-
-                    GUILayout.Label(GUI.tooltip, ParentView.CustomLabelStyle);
-
-                    GUI.tooltip = "";
 
                     ++Index;
                 }
@@ -223,6 +245,7 @@ namespace Assets.Scripts.Console
             }
 
             // draw all groups first
+            Count = 0;
 
             GUI.contentColor = Color.green;
             try
@@ -390,6 +413,14 @@ namespace Assets.Scripts.Console
         {
             logger.Clear();
         }
+
+        public override bool canScroll
+        {
+            get
+            {
+                return false;
+            }
+        }
     }
 
     class ConsoleViewMobile : IConsoleView
@@ -438,6 +469,17 @@ namespace Assets.Scripts.Console
         public GUIStyle CustomSmallLabelStyle = null;
         public GUIStyle CustomTextFieldStyle = null;
 
+        public int skipCount
+        {
+            get;
+            private set;
+        }
+
+        public void UpdateSkipCount(int InMaxCount)
+        {
+            skipCount = Math.Min(InMaxCount, skipCount);
+        }
+
         public void OnConsole(int InWindowID)
         {
             try
@@ -452,7 +494,7 @@ namespace Assets.Scripts.Console
 
                 int BaseUniformFontSize = 60;
                 int BaseUniformFontSmallSize = 25;
-                float OffsetFactor = 1.0f;
+                float OffsetFactor = 0.75f;
                 float height = (float)Screen.height;
                 float width = (float)Screen.width;
 
@@ -474,14 +516,24 @@ namespace Assets.Scripts.Console
                 {
                     GUILayout.BeginVertical();
 
-                    //   GUILayout.Label(Logger.message, CustomLabelStyle);
+                    // GUILayout.Label(Logger.message, CustomLabelStyle);
 
-                    if (hasPreviousState)
                     {
-                        DrawPreviousButton();
+                        GUILayout.BeginHorizontal();
 
-                        //   DrawEmptyLine(1);
+                        if (hasPreviousState)
+                        {
+                            DrawPreviousButton();
+                        }
+
+                        if (((CommandDisplayBasicState)States.TopState()).canScroll)
+                        {
+                            DrawScrollButton();
+                        }
+
+                        GUILayout.EndHorizontal();
                     }
+
 
                     if (States.TopState() != null)
                     {
@@ -495,7 +547,7 @@ namespace Assets.Scripts.Console
             }
             catch (Exception e)
             {
-                DebugHelper.Assert( false, string.Format("ConsoleViewMobile Exception: {0} , Stack: {1}", e.Message, e.StackTrace));
+                DebugHelper.Assert(false, string.Format("ConsoleViewMobile Exception: {0} , Stack: {1}", e.Message, e.StackTrace));
             }
         }
 
@@ -509,6 +561,33 @@ namespace Assets.Scripts.Console
             }
         }
 
+        protected void DrawScrollButton()
+        {
+            GUI.contentColor = Color.yellow;
+
+            try
+            {
+                if ((States.TopState() as CommandDisplayBasicState).DrawButton("Up"))
+                {
+                    skipCount = skipCount + 1;
+                }
+
+                if ((States.TopState() as CommandDisplayBasicState).DrawButton("Down"))
+                {
+                    skipCount = Math.Max(0, skipCount - 1);
+                }
+
+                if ((States.TopState() as CommandDisplayBasicState).DrawButton("Reset"))
+                {
+                    skipCount = 0;
+                }
+            }
+            finally
+            {
+                GUI.contentColor = Color.white;
+            }
+        }
+
         protected void DrawPreviousButton()
         {
             GUI.contentColor = Color.cyan;
@@ -517,6 +596,7 @@ namespace Assets.Scripts.Console
             {
                 if ((States.TopState() as CommandDisplayBasicState).DrawButton("Previous"))
                 {
+                    skipCount = 0;
                     States.PopState();
                 }
             }
