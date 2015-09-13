@@ -651,7 +651,11 @@ namespace Assets.Scripts.Console
 
             TextEditor editor = (TextEditor)GUIUtility.GetStateObject(typeof(TextEditor), GUIUtility.keyboardControl);
 
+#if UNITY_5_2
+            cursorPos = editor.cursorIndex;
+#else
             cursorPos = editor.pos;
+#endif
 
             if (bShouldUpdateCursorPos)
             {
