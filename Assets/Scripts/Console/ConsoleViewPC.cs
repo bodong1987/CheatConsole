@@ -3,7 +3,7 @@
  * @email bodong@tencent.com
 */
 
-#if !WITH_OUT_CHEAT_CONSOLE
+#if !WITH_OUT_CHEAT_CONSOLE && (UNITY_STANDALONE || UNITY_EDITOR)
 using System;
 using System.Collections.Generic;
 using System.Linq;
