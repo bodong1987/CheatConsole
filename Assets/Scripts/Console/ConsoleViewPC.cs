@@ -694,6 +694,11 @@ namespace Assets.Scripts.Console
         {
             CommandLogger.Save();
         }
+
+        public void OnUpdate()
+        {
+
+        }
     }
 }
 #endif

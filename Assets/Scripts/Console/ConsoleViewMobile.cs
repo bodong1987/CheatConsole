@@ -431,6 +431,8 @@ namespace Assets.Scripts.Console
 
         StateMachine States = new StateMachine();
 
+        ConsoleDragHandler DragHandler = new ConsoleDragHandler();
+        
         public ConsoleViewMobile(ConsoleWindow InParent)
         {
             ParentWindow = InParent;
@@ -639,6 +641,15 @@ namespace Assets.Scripts.Console
         public void OnDestory()
         {
 
+        }
+
+        public void OnUpdate()
+        {
+            DragHandler.OnUpdate();
+            if(DragHandler.isDragging)
+            {
+                Debug.Log(DragHandler.dragDelta);
+            }            
         }
     }
 }

@@ -39,6 +39,8 @@ namespace Assets.Scripts.Console
         void OnToggleVisible(bool bVisible);
 
         void OnDestory();
+
+        void OnUpdate();
     }
 
     public class ConsoleWindow : MonoSingleton<ConsoleWindow>
@@ -51,7 +53,7 @@ namespace Assets.Scripts.Console
 
         bool bShouldVisible = false;
 
-        public bool bEnableUseGmPanel = false;
+        public bool bEnableCheatConsole = false;
 
         public IConsoleLogger externalLogger = null;
 
@@ -77,11 +79,12 @@ namespace Assets.Scripts.Console
 
         void Update()
         {
-            if (!bEnableUseGmPanel)
+            if (!bEnableCheatConsole)
             {
                 return;
             }
 
+#if UNITY_EDITOR || UNITY_STANDALONE
             if (Input.GetKeyDown(KeyCode.F1))
             {
                 bool bVisible = ToggleVisible();
@@ -99,6 +102,7 @@ namespace Assets.Scripts.Console
                     }
                 }
             }
+#endif
 
             for (int i = 0; i < Input.touchCount; ++i)
             {
@@ -109,7 +113,12 @@ namespace Assets.Scripts.Console
                     ToggleVisible();
                     break;
                 }
-            }   
+            }
+
+            if (Viewer != null)
+            {
+                Viewer.OnUpdate();
+            }
         }
 
 
@@ -137,7 +146,7 @@ namespace Assets.Scripts.Console
 
         public bool ToggleVisible()
         {
-            bool bResult = !isVisible && bEnableUseGmPanel;
+            bool bResult = !isVisible && bEnableCheatConsole;
 
             isVisible = bResult;
 

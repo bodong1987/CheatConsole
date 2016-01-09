@@ -19,7 +19,7 @@ namespace Assets.Scripts.Framework
             
             // you can set this flag by the networking message
             // eg:is this account a gm account?
-            ConsoleWindow.instance.bEnableUseGmPanel = true;
+            ConsoleWindow.instance.bEnableCheatConsole = true;
 
             CheatCommandRegister.instance.Register(typeof(GameFramework).Assembly);
 #endif

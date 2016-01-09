@@ -39,7 +39,7 @@ namespace Assets.Scripts.Console
             return CheatCommandBase.Done;
         }
 
-        [CheatCommandEntryMethodAttribute("TestEntry2", false)]
+        [CheatCommandEntryMethodAttribute("Tests/TestEntry2", false)]
         public static string TestEntry2( TestEnum InEnum )
         {
             ConsoleWindow.instance.AddMessage(((int)InEnum).ToString());

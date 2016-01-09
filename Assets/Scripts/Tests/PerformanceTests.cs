@@ -6,7 +6,7 @@ using Assets.Scripts.Common;
 
 public class PerformanceTests : MonoBehaviour
 {
-    Plane[] SysPlanes = null;
+    //Plane[] SysPlanes = null;
     Plane[] CustomPlanes = new Plane[6];
     
     void Awake()
@@ -24,7 +24,7 @@ public class PerformanceTests : MonoBehaviour
 
     void SysTests()
     {
-        SysPlanes = GeometryUtility.CalculateFrustumPlanes(Camera.main);
+     //   SysPlanes = GeometryUtility.CalculateFrustumPlanes(Camera.main);
     }
 
     void CustomTests()
