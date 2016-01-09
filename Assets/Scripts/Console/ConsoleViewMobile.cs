@@ -79,6 +79,25 @@ namespace Assets.Scripts.Console
             GUILayout.Label(Content, ParentView.CustomLabelStyle, GUILayout.Width(Size.x + 15));
         }
 
+        public override void OnStateEnter()
+        {
+            base.OnStateEnter();
+
+            OnResetSkipCount();
+        }
+
+        public override void OnStateResume()
+        {
+            base.OnStateResume();
+
+            OnResetSkipCount();
+        }
+
+        protected virtual void OnResetSkipCount()
+        {
+
+        }
+
         public virtual bool canScroll
         {
             get
@@ -134,12 +153,10 @@ namespace Assets.Scripts.Console
             }
         }
 
-        public override void OnStateEnter()
+        protected override void OnResetSkipCount()
         {
-            base.OnStateEnter();
-
             ParentView.UpdateSkipCount(CheatCommandsRepository.instance.repositories.Count);
-        }
+        }               
 
         public override bool canScroll
         {
@@ -165,7 +182,15 @@ namespace Assets.Scripts.Console
         {
             currentGroup = InGroup;
 
-            ParentView.UpdateSkipCount(currentGroup.ChildrenGroups.Count + currentGroup.Commands.Count);
+            OnResetSkipCount();
+        }
+
+        protected override void OnResetSkipCount()
+        {
+            if(currentGroup != null)
+            {
+                ParentView.UpdateSkipCount(currentGroup.ChildrenGroups.Count + currentGroup.Commands.Count);
+            }
         }
 
         protected void DrawGroups()
