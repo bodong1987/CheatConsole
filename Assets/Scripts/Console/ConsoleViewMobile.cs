@@ -448,8 +448,6 @@ namespace Assets.Scripts.Console
 
             States.RegisterStateByAttributes<CommandDisplayAttribute>(typeof(CommandDisplayAttribute).Assembly, ParentWindow, this);
             States.ChangeState("CommandGroupDisplayState");
-
-            UpdateSkipCount(CheatCommandsRepository.instance.repositories.Count);
         }
 
         public void Awake()
@@ -542,12 +540,7 @@ namespace Assets.Scripts.Console
                         {
                             DrawPreviousButton();
                         }
-
-                        if (((CommandDisplayBasicState)States.TopState()).canScroll)
-                        {
-                            // DrawScrollButton();
-                        }
-
+                        
                         GUILayout.EndHorizontal();
                     }
 
@@ -577,34 +570,7 @@ namespace Assets.Scripts.Console
                 GUILayout.EndHorizontal();
             }
         }
-
-        protected void DrawScrollButton()
-        {
-            GUI.contentColor = Color.yellow;
-
-            try
-            {
-                if ((States.TopState() as CommandDisplayBasicState).DrawButton("Up"))
-                {
-                    skipCount = skipCount + 1;
-                }
-
-                if ((States.TopState() as CommandDisplayBasicState).DrawButton("Down"))
-                {
-                    skipCount = Math.Max(0, skipCount - 1);
-                }
-
-                if ((States.TopState() as CommandDisplayBasicState).DrawButton("Reset"))
-                {
-                    skipCount = 0;
-                }
-            }
-            finally
-            {
-                GUI.contentColor = Color.white;
-            }
-        }
-
+        
         protected void DrawPreviousButton()
         {
             GUI.contentColor = Color.cyan;

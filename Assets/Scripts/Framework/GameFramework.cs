@@ -10,18 +10,22 @@ namespace Assets.Scripts.Framework
     public class GameFramework :
         MonoSingleton<GameFramework>
     {
+        // you can set this flag by the networking message
+        // eg:is this account a gm account?
+        public bool bSupportCheatConsole = true;
+
         protected override void Init()
         {
             base.Init();
 
-#if !WITH_OUT_CHEAT_CONSOLE
-            ConsoleWindow.instance.isVisible = false;
-            
-            // you can set this flag by the networking message
-            // eg:is this account a gm account?
-            ConsoleWindow.instance.bEnableCheatConsole = true;
+#if !WITH_OUT_CHEAT_CONSOLE           
+            if(bSupportCheatConsole)
+            {
+                CheatCommandRegister.instance.Register(typeof(GameFramework).Assembly);
+                ConsoleWindow.instance.isVisible = false;
 
-            CheatCommandRegister.instance.Register(typeof(GameFramework).Assembly);
+                ConsoleWindow.instance.bEnableCheatConsole = true;
+            }
 #endif
         }
     }
