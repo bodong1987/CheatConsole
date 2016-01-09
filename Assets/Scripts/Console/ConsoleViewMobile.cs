@@ -448,6 +448,8 @@ namespace Assets.Scripts.Console
 
             States.RegisterStateByAttributes<CommandDisplayAttribute>(typeof(CommandDisplayAttribute).Assembly, ParentWindow, this);
             States.ChangeState("CommandGroupDisplayState");
+
+            UpdateSkipCount(CheatCommandsRepository.instance.repositories.Count);
         }
 
         public void Awake()
@@ -664,7 +666,13 @@ namespace Assets.Scripts.Console
                 if (DragHandler.isDragging)
                 {
                     // Debug.Log(DragHandler.dragDelta);
-                    float DragDelta = DragHandler.dragDelta * 0.6f;
+#if UNITY_EDITOR || UNITY_STANDALONE
+                    float Speed = 0.6f;
+#else
+                    float Speed = 10.0f;
+#endif
+
+                    float DragDelta = DragHandler.dragDelta * Speed;
                     ScrollValue += DragDelta;
 
                   //  Debug.Log(string.Format("drag delta:{0} scroll {1}", DragDelta, ScrollValue));
