@@ -134,11 +134,18 @@ namespace Assets.Scripts.Console
             }
         }
 
+        public override void OnStateEnter()
+        {
+            base.OnStateEnter();
+
+            ParentView.UpdateSkipCount(CheatCommandsRepository.instance.repositories.Count);
+        }
+
         public override bool canScroll
         {
             get
             {
-                return false;
+                return true;
             }
         }
     }
@@ -157,6 +164,8 @@ namespace Assets.Scripts.Console
         public void SetGroup(CheatCommandGroup InGroup)
         {
             currentGroup = InGroup;
+
+            ParentView.UpdateSkipCount(currentGroup.ChildrenGroups.Count + currentGroup.Commands.Count);
         }
 
         protected void DrawGroups()
@@ -477,9 +486,13 @@ namespace Assets.Scripts.Console
             private set;
         }
 
+        private int MaxSkipCount;
+        private float ScrollValue;
+
         public void UpdateSkipCount(int InMaxCount)
         {
-            skipCount = Math.Min(InMaxCount, skipCount);
+            MaxSkipCount = InMaxCount;
+            skipCount = Math.Min(InMaxCount-1, skipCount);
         }
 
         public void OnConsole(int InWindowID)
@@ -530,7 +543,7 @@ namespace Assets.Scripts.Console
 
                         if (((CommandDisplayBasicState)States.TopState()).canScroll)
                         {
-                            DrawScrollButton();
+                            // DrawScrollButton();
                         }
 
                         GUILayout.EndHorizontal();
@@ -645,11 +658,35 @@ namespace Assets.Scripts.Console
 
         public void OnUpdate()
         {
-            DragHandler.OnUpdate();
-            if(DragHandler.isDragging)
+            if (((CommandDisplayBasicState)States.TopState()).canScroll)
             {
-                Debug.Log(DragHandler.dragDelta);
-            }            
+                DragHandler.OnUpdate();
+                if (DragHandler.isDragging)
+                {
+                    // Debug.Log(DragHandler.dragDelta);
+                    float DragDelta = DragHandler.dragDelta * 0.6f;
+                    ScrollValue += DragDelta;
+
+                  //  Debug.Log(string.Format("drag delta:{0} scroll {1}", DragDelta, ScrollValue));
+
+                    if (Math.Abs(ScrollValue) > 1)
+                    {
+                        int NewSkipCount = skipCount + (int)ScrollValue;
+                        ScrollValue -= (int)ScrollValue;
+
+                        NewSkipCount = Math.Min(MaxSkipCount-1, NewSkipCount);
+                        skipCount = Math.Max(NewSkipCount, 0);
+                    }
+                }
+                else
+                {
+                    ScrollValue = 0;
+                }
+            }
+            else
+            {
+                ScrollValue = 0;
+            }
         }
     }
 }
