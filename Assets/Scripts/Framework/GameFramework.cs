@@ -24,7 +24,7 @@ namespace Assets.Scripts.Framework
                 CheatCommandRegister.instance.Register(typeof(GameFramework).Assembly);
                 ConsoleWindow.instance.isVisible = false;
 
-                ConsoleWindow.instance.bEnableCheatConsole = true;
+                ConsoleWindow.instance.bEnableCheatConsole = bSupportCheatConsole;
             }
 #endif
         }
