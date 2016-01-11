@@ -189,7 +189,19 @@ namespace Assets.Scripts.Console
         {
             if(currentGroup != null)
             {
-                ParentView.UpdateSkipCount(currentGroup.ChildrenGroups.Count + currentGroup.Commands.Count);
+                int CommandsCount = 0;
+
+                var Iter = currentGroup.Commands.GetEnumerator();
+
+                while (Iter.MoveNext())
+                {
+                    if (!Iter.Current.Value.isHiddenInMobile)
+                    {
+                        ++CommandsCount;
+                    }
+                }
+
+                ParentView.UpdateSkipCount(currentGroup.ChildrenGroups.Count + CommandsCount);
             }
         }
 
