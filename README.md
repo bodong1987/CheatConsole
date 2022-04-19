@@ -23,5 +23,4 @@ tips:
 	 ctrl + up arrow/down arrow, select in history lists.
 
 email:
-    bodong@tencent.com or
     dbdongbo@vip.qq.com
