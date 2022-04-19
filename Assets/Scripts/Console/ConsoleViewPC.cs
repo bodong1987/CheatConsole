@@ -1,6 +1,6 @@
 ﻿/**
  * @brief PC Mode Drawer
- * @email bodong@tencent.com
+ * @email dbdongbo@vip.qq.com
 */
 
 #if !WITH_OUT_CHEAT_CONSOLE && (UNITY_STANDALONE || UNITY_EDITOR)
@@ -651,7 +651,7 @@ namespace Assets.Scripts.Console
 
             TextEditor editor = (TextEditor)GUIUtility.GetStateObject(typeof(TextEditor), GUIUtility.keyboardControl);
 
-#if UNITY_5_2
+#if UNITY_5
             cursorPos = editor.cursorIndex;
 #else
             cursorPos = editor.pos;

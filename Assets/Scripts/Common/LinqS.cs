@@ -1,6 +1,6 @@
 ﻿/**
  * @brief used to remove System.Linq
- * @email bodong@tencent.com
+ * @email dbdongbo@vip.qq.com
 */
 using System;
 using System.Collections.Generic;

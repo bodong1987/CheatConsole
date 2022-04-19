@@ -1,6 +1,6 @@
 ﻿/**
  * @brief Basic Implementation
- * @email bodong@tencent.com
+ * @email dbdongbo@vip.qq.com
 */
 #if !WITH_OUT_CHEAT_CONSOLE
 

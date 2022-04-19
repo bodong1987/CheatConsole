@@ -1,6 +1,6 @@
 ﻿/**
  * @brief simple parser
- * @email bodong@tencent.com
+ * @email dbdongbo@vip.qq.com
 */
 
 #if !WITH_OUT_CHEAT_CONSOLE && (UNITY_STANDALONE || UNITY_EDITOR)

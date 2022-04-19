@@ -1,6 +1,6 @@
 ﻿/**
  * @brief Basic Reflection Support
- * @email bodong@tencent.com
+ * @email dbdongbo@vip.qq.com
 */
 
 using System;

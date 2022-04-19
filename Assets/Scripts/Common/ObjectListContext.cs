@@ -1,6 +1,6 @@
 ﻿/**
  * @brief Fix IL2CPP code size
- * @email bodong@tencent.com
+ * @email dbdongbo@vip.qq.com
 */
 using System;
 using System.Collections;
